@@ -1,3 +1,5 @@
+import os
+
 from typing import Any, ClassVar
 
 from pydantic import Field, field_validator, model_validator
@@ -18,6 +20,14 @@ class OllamaEmbedderConfig(BaseEmbedderConfig):
     api_base: str = Field(default="http://localhost:11434", description="Base URL for Ollama API")
 
 
+class ArkEmbedderConfig(BaseEmbedderConfig):
+    api_base: str = Field(
+        default="https://ark.cn-beijing.volces.com/api/v3/", description="Base URL for Ark API"
+    )
+    api_key: str = Field(default=os.environ.get("API_KEY"), description="Ark API key")
+    chunk_size: int = Field(default=1000, description="Chunk size for Ark API")
+
+
 class SenTranEmbedderConfig(BaseEmbedderConfig):
     """Configuration class for Sentence Transformer embeddings."""
 
@@ -36,6 +46,7 @@ class EmbedderConfigFactory(BaseConfig):
     backend_to_class: ClassVar[dict[str, Any]] = {
         "ollama": OllamaEmbedderConfig,
         "sentence_transformer": SenTranEmbedderConfig,
+        "ark": ArkEmbedderConfig,
     }
 
     @field_validator("backend")
