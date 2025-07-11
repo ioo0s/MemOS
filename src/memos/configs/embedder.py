@@ -23,7 +23,7 @@ class ArkEmbedderConfig(BaseEmbedderConfig):
     api_base: str = Field(
         default="https://ark.cn-beijing.volces.com/api/v3/", description="Base URL for Ark API"
     )
-    chunk_size: int = Field(default=1000, description="Chunk size for Ark API")
+    chunk_size: int = Field(default=1, description="Chunk size for Ark API")
 
 
 class SenTranEmbedderConfig(BaseEmbedderConfig):
