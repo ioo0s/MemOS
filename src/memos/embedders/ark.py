@@ -1,12 +1,8 @@
 from volcenginesdkarkruntime import Ark
 from volcenginesdkarkruntime.types.multimodal_embedding import (
     EmbeddingInputParam,
-    MultimodalEmbeddingContentPartImageParam,
     MultimodalEmbeddingContentPartTextParam,
     MultimodalEmbeddingResponse,
-)
-from volcenginesdkarkruntime.types.multimodal_embedding.embedding_content_part_image_param import (
-    ImageURL,
 )
 
 from memos.configs.embedder import ArkEmbedderConfig
@@ -52,14 +48,6 @@ class ArkEmbedder(BaseEmbedder):
             MultimodalEmbeddingContentPartTextParam(text=text, type="text") for text in texts
         ]
         return self.multimodal_embeddings(texts_input, chunk_size=self.config.chunk_size)
-
-    def embed_images(self, urls: list[str], chunk_size: int | None = None) -> list[list[float]]:
-        chunk_size_ = chunk_size or self.config.chunk_size
-        images_input = [
-            MultimodalEmbeddingContentPartImageParam(image_url=ImageURL(url=url), type="image_url")
-            for url in urls
-        ]
-        return self.multimodal_embeddings(images_input, chunk_size=chunk_size_)
 
     def multimodal_embeddings(
         self, inputs: list[EmbeddingInputParam], chunk_size: int | None = None
