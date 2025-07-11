@@ -18,7 +18,7 @@ logger = get_logger(__name__)
 
 
 class ArkEmbedder(BaseEmbedder):
-    """Arl Embedder class."""
+    """Ark Embedder class."""
 
     def __init__(self, config: ArkEmbedderConfig):
         self.config = config
@@ -35,7 +35,7 @@ class ArkEmbedder(BaseEmbedder):
         if not self.config.model_name_or_path:
             self.config.model_name_or_path = "doubao-embedding-vision-250615"
 
-        # Initialize ollama client
+        # Initialize ark client
         self.client = Ark(api_key=self.config.api_key, base_url=self.config.api_base)
 
     def embed(self, texts: list[str]) -> list[list[float]]:
@@ -52,9 +52,6 @@ class ArkEmbedder(BaseEmbedder):
             MultimodalEmbeddingContentPartTextParam(text=text, type="text") for text in texts
         ]
         return self.multimodal_embeddings(texts_input, chunk_size=self.config.chunk_size)
-
-    def embed_query(self, text: str) -> list[float]:
-        return self.embed_documents([text])[0]
 
     def embed_images(self, urls: list[str], chunk_size: int | None = None) -> list[list[float]]:
         chunk_size_ = chunk_size or self.config.chunk_size
